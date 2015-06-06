@@ -33,6 +33,16 @@ $app->group(['prefix' => 'v1/users'], function($app)
         'uses'       => 'App\Http\Controllers\UserController@create'
     ]);
 
+    /**
+     * User – Set his preferred genres
+     * POST /v1/users/genres
+     */
+    $app->post('genres', [
+        'as'         => 'users_set_genres',
+        'uses'       => 'App\Http\Controllers\UserController@setGenres',
+        'middleware' => 'auth'
+    ]);
+
 });
 
 $app->group(['prefix' => 'v1/movies'], function($app)

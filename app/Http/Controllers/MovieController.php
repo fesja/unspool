@@ -47,10 +47,10 @@ class MovieController extends BaseController
     public function rate(Request $request, $movie_id)
     {
         $data = $this->getBody();
-        $rate = $data['rate'];
+        $rate = isset($data['rate']) ? $data['rate'] : '';
 
         if ( !$rate || !in_array($rate, array('like', 'dislike')) ) {
-            return $this->requestErrorResponse(['Rate' => 'Its value must be like or dislike']);
+            return $this->requestErrorResponse(['rate' => 'Its value must be like or dislike']);
         }
 
         $user = Auth::user();
