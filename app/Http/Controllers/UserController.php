@@ -14,10 +14,10 @@ class UserController extends BaseController
      */
     public function create()
     {
-        $auth_token = Request::header('X-Auth-Token');
+        $auth_token = Request::header('X-AUTH-TOKEN');
 
         if ( !$auth_token ) {
-            return $this->requestErrorResponse(['X-Auth-Token' => 'You need to provide an auth token']);
+            return $this->requestErrorResponse(['X-AUTH-TOKEN' => 'You need to provide an auth token']);
         }
 
         $user = User::whereAuthToken($auth_token)->first();

@@ -16,7 +16,7 @@ class AuthMiddleware {
      */
     public function handle($request, Closure $next)
     {
-        $auth_token = Request::header('X-Auth-Token');
+        $auth_token = Request::header('X-AUTH-TOKEN');
 
         if ( !$auth_token ) {
             $response = [
