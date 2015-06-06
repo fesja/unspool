@@ -79,7 +79,6 @@ $app->routeMiddleware([
 */
 
 //$app->register('Spescina\WebfactionCommands\WebfactionCommandsServiceProvider');
-//$app->register('App\Providers\CustomAuthProvider');
 
 /*
 |--------------------------------------------------------------------------
