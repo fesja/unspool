@@ -80,6 +80,18 @@ $app->routeMiddleware([
 
 //$app->register('Spescina\WebfactionCommands\WebfactionCommandsServiceProvider');
 
+
+/*
+|--------------------------------------------------------------------------
+| Constants
+|--------------------------------------------------------------------------
+|
+| Here we will load config files
+|
+*/
+$app->configure('constants');
+
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

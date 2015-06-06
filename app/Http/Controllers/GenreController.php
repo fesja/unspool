@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers;
 
-use App\Models\Genre;
+use App\Models\Genre,
+    Cache,
+    Illuminate\Support\Facades\Config;
 
 class GenreController extends BaseController
 {
@@ -9,7 +11,12 @@ class GenreController extends BaseController
      */
     public function all()
     {
-        $genres = Genre::all();
+        $minutes = Config::get('constants.cache_genres_expiration');
+
+        $genres = Cache::remember('users', $minutes, function()
+        {
+            return Genre::all();
+        });
 
         return $this->listResponse($genres);
     }
