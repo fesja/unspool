@@ -20,7 +20,12 @@ $app->get('v1/genres', [
     'uses'       => 'App\Http\Controllers\GenreController@all'
 ]);
 
-$app->group(['prefix' => 'v1/users'], function($app)
+$app->group(
+    [
+        'prefix' => 'v1/users',
+        'namespace'  => 'App\Http\Controllers'
+    ],
+    function($app)
 {
     /**
      * User – Create a new user
@@ -30,7 +35,7 @@ $app->group(['prefix' => 'v1/users'], function($app)
      */
     $app->post('', [
         'as'         => 'users_create',
-        'uses'       => 'App\Http\Controllers\UserController@create'
+        'uses'       => 'UserController@create'
     ]);
 
     /**
@@ -39,7 +44,7 @@ $app->group(['prefix' => 'v1/users'], function($app)
      */
     $app->post('genres', [
         'as'         => 'users_set_genres',
-        'uses'       => 'App\Http\Controllers\UserController@setGenres',
+        'uses'       => 'UserController@setGenres',
         'middleware' => 'auth'
     ]);
 
