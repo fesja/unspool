@@ -7,7 +7,7 @@ use App\Models\Wish;
 
 use Auth,
     Request,
-    DB;
+    Input;
 
 class MovieController extends BaseController
 {
@@ -16,11 +16,13 @@ class MovieController extends BaseController
      */
     public function discover()
     {
+        $limit  = Request::input('limit', 5);
+
         $movies = Movie::where('imdb_votes', '>', 1000)
             ->where('imdb_rating', '>', 7)
             //->orderBy('imdb_rating', 'desc')
             ->orderBy('year', 'desc')
-            ->take(5)
+            ->take($limit)
             ->get();
 
         return $this->listResponse($movies);

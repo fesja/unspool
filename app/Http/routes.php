@@ -45,7 +45,13 @@ $app->group(['prefix' => 'v1/users'], function($app)
 
 });
 
-$app->group(['prefix' => 'v1/movies'], function($app)
+$app->group(
+    [
+        'prefix'     => 'v1/movies',
+        'namespace'  => 'App\Http\Controllers',
+        'middleware' => 'auth'
+    ],
+    function($app)
 {
     /**
      * Movies – Get recommended movies
@@ -55,8 +61,7 @@ $app->group(['prefix' => 'v1/movies'], function($app)
      */
     $app->get('discover', [
         'as'         => 'movies_discover',
-        'uses'       => 'App\Http\Controllers\MovieController@discover',
-        'middleware' => 'auth'
+        'uses'       => 'MovieController@discover'
     ]);
 
     /**
@@ -67,8 +72,7 @@ $app->group(['prefix' => 'v1/movies'], function($app)
      */
     $app->get('wishlist', [
         'as'         => 'movies_wishlist',
-        'uses'       => 'App\Http\Controllers\MovieController@wishlist',
-        'middleware' => 'auth'
+        'uses'       => 'MovieController@wishlist'
     ]);
 
     /**
@@ -79,8 +83,7 @@ $app->group(['prefix' => 'v1/movies'], function($app)
      */
     $app->post('{movie_id}/rate', [
         'as'         => 'movies_rate',
-        'uses'       => 'App\Http\Controllers\MovieController@rate',
-        'middleware' => 'auth'
+        'uses'       => 'MovieController@rate'
     ]);
 
     /**
@@ -89,8 +92,7 @@ $app->group(['prefix' => 'v1/movies'], function($app)
      */
     $app->delete('{movie_id}/rate', [
         'as'         => 'movies_rate_delete',
-        'uses'       => 'App\Http\Controllers\MovieController@rateDelete',
-        'middleware' => 'auth'
+        'uses'       => 'MovieController@rateDelete'
     ]);
 
     /**
@@ -99,8 +101,7 @@ $app->group(['prefix' => 'v1/movies'], function($app)
      */
     $app->post('{movie_id}/wish', [
         'as'         => 'movies_wish',
-        'uses'       => 'App\Http\Controllers\MovieController@wish',
-        'middleware' => 'auth'
+        'uses'       => 'MovieController@wish'
     ]);
 
     /**
@@ -109,8 +110,7 @@ $app->group(['prefix' => 'v1/movies'], function($app)
      */
     $app->delete('{movie_id}/wish', [
         'as'         => 'movies_wish_delete',
-        'uses'       => 'App\Http\Controllers\MovieController@wishDelete',
-        'middleware' => 'auth'
+        'uses'       => 'MovieController@wishDelete'
     ]);
 
     /**
@@ -119,8 +119,7 @@ $app->group(['prefix' => 'v1/movies'], function($app)
      */
     $app->post('{movie_id}/skip', [
         'as'         => 'movies_skip',
-        'uses'       => 'App\Http\Controllers\MovieController@skip',
-        'middleware' => 'auth'
+        'uses'       => 'MovieController@skip'
     ]);
 });
 
