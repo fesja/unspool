@@ -25,4 +25,15 @@ class Movie extends Model {
         return $this->belongsToMany('App\Models\User', 'wishes');
     }
 
+    /**
+     * Return the poster URL of a bigger size
+     * @return String
+     */
+    public function getPosterAttribute()
+    {
+        $posterAr = explode("._V1", $this->attributes['poster']);
+
+        return $posterAr[0]."._V1_SX1280_SY1440_.jpg";
+    }
+
 }
