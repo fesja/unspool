@@ -53,6 +53,6 @@ class UserController extends BaseController
        $user->genres = implode(',', $genres);
        $user->save();
 
-       return $this->createdResponse();
+       return $this->createdResponse($user);
     }
 }

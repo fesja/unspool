@@ -10,7 +10,7 @@ class User extends Model implements Authenticatable {
 
     protected $table = 'users';
 
-    protected $visible = ['id', 'auth_token', 'created_at'];
+    protected $visible = ['id', 'auth_token', 'genres', 'created_at'];
 
     public function moviesInWishlist()
     {
