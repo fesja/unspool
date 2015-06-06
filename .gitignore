@@ -1,0 +1,9 @@
+/lumen.log
+/vendor
+.env
+
+/composer.lock
+
+/resources/views/.gitkeep
+
+/storage/app/.gitignore
