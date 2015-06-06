@@ -11,6 +11,15 @@
 |
 */
 
+/**
+ * Genres – List
+ * GET /v1/genres
+ */
+$app->get('v1/genres', [
+    'as'         => 'genres',
+    'uses'       => 'App\Http\Controllers\GenreController@all'
+]);
+
 $app->group(['prefix' => 'v1/users'], function($app)
 {
     /**
