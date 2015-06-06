@@ -5,7 +5,9 @@ use App\Models\Movie;
 use App\Models\Rating;
 use App\Models\Wish;
 
-use Illuminate\Http\Request;
+use Auth,
+    Request,
+    DB;
 
 class MovieController extends BaseController
 {
@@ -29,10 +31,10 @@ class MovieController extends BaseController
      */
     public function wishlist()
     {
-        // Auth::user()
-        $user = User::find(6);
-
-        $moviesInWishlist = $user->moviesInWishlist()->wherePivot('seen_at', '=', NULL)->take(100)->get();
+        $moviesInWishlist = Auth::user()->moviesInWishlist()
+            ->wherePivot('seen_at', '=', NULL)
+            ->take(100)
+            ->get();
 
         return $this->listResponse($moviesInWishlist);
     }
@@ -44,11 +46,20 @@ class MovieController extends BaseController
      */
     public function rate(Request $request, $movie_id)
     {
-        $data = $this->getBody($request);
+        $data = $this->getBody();
         $rate = $data['rate'];
 
-        $user = User::find(6);
+        if ( !$rate || !in_array($rate, array('like', 'dislike')) ) {
+            return $this->requestErrorResponse(['Rate' => 'Its value must be like or dislike']);
+        }
+
+        $user = Auth::user();
+
         $movie = Movie::find($movie_id);
+
+        if ( !$movie ) {
+            return $this->notFoundResponse();
+        }
 
         $rating = Rating::where('user_id', $user->id)
             ->where('movie_id', $movie->id)
@@ -86,9 +97,7 @@ class MovieController extends BaseController
      */
     public function rateDelete($movie_id)
     {
-        $user = User::find(6);
-
-        Rating::where('user_id', $user->id)
+        Rating::where('user_id', Auth::user()->id)
             ->where('movie_id', $movie_id)
             ->delete();
 
@@ -102,11 +111,14 @@ class MovieController extends BaseController
      */
     public function wish($movie_id)
     {
-        $user = User::find(6);
         $movie = Movie::find($movie_id);
 
+        if ( !$movie ) {
+            return $this->notFoundResponse();
+        }
+
         $wish = new Wish;
-        $wish->user_id  = $user->id;
+        $wish->user_id  = Auth::user()->id;
         $wish->movie_id = $movie->id;
 
         try {
@@ -126,9 +138,7 @@ class MovieController extends BaseController
      */
     public function wishDelete($movie_id)
     {
-        $user = User::find(6);
-
-        Wish::where('user_id', $user->id)
+        Wish::where('user_id', Auth::user()->id)
             ->where('movie_id', $movie_id)
             ->delete();
 

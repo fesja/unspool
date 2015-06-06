@@ -1,6 +1,9 @@
 <?php namespace App\Http\Middleware;
 
-use Closure, Auth;
+use App\Models\User,
+    Auth,
+    Closure,
+    Request;
 
 class AuthMiddleware {
 
@@ -13,17 +16,31 @@ class AuthMiddleware {
      */
     public function handle($request, Closure $next)
     {
-        // $data = json_decode($request->getContent(), true);
+        $auth_token = Request::header('X-Auth-Token');
 
-        // if ( !isset($data['auth_token']) ) {
-        //     // error
-        // }
+        if ( !$auth_token ) {
+            $response = [
+                'code'    => 401,
+                'status'  => 'error',
+                'data'    => [],
+                'message' => 'You need to provide an auth token'
+            ];
+            return response()->json($response, $response['code']);
+        }
 
-        // // Connect the user
-        // if ( !Auth::once(['auth_token' => $data['auth_token']]) ) {
+        $user = User::whereAuthToken($auth_token)->first();
 
-        //     // user not found
-        // }
+        if ( !$user ) {
+            $response = [
+                'code'    => 401,
+                'status'  => 'error',
+                'data'    => [],
+                'message' => 'The auth token is incorrect'
+            ];
+            return response()->json($response, $response['code']);
+        }
+
+        Auth::login($user);
 
         return $next($request);
     }

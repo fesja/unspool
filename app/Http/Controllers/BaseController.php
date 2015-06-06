@@ -1,7 +1,8 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as Controller;
+
+use Request;
 
 class BaseController extends Controller
 {
@@ -40,8 +41,8 @@ class BaseController extends Controller
         $response = [
             'code'    => 404,
             'status'  => 'error',
-            'data'    => 'Resource Not Found',
-            'message' => 'Not Found'
+            'data'    => [],
+            'message' => 'Not found'
         ];
         return response()->json($response, $response['code']);
     }
@@ -57,18 +58,18 @@ class BaseController extends Controller
         return response()->json($response, $response['code']);
     }
 
-    protected function clientErrorResponse($data=array())
+    protected function requestErrorResponse($data=array())
     {
         $response = [
-            'code'    => 422,
+            'code'    => 400,
             'status'  => 'error',
             'data'    => $data,
-            'message' => 'Unprocessable entity'
+            'message' => 'Request not valid'
         ];
         return response()->json($response, $response['code']);
     }
 
-    protected function getBody($request) {
-        return json_decode($request->getContent(), true);
+    protected function getBody() {
+        return json_decode(Request::getContent(), true);
     }
 }

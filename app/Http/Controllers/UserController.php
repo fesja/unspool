@@ -1,8 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Models\User;
+use App\Models\User,
+    Request;
 
 class UserController extends BaseController
 {
@@ -11,15 +10,19 @@ class UserController extends BaseController
      *
      * @param  int $udid
      */
-    public function create(Request $request)
+    public function create()
     {
-        $data = $this->getBody($request);
+        $auth_token = Request::header('X-Auth-Token');
 
-        $user = User::whereAuthToken($data['auth_token'])->first();
+        if ( !$auth_token ) {
+            return $this->requestErrorResponse(['Auth token' => 'You need to provide an auth token']);
+        }
+
+        $user = User::whereAuthToken($auth_token)->first();
 
         if ( !$user ) {
             $user = new User;
-            $user->auth_token = $data['auth_token'];
+            $user->auth_token = $auth_token;
             $user->save();
         }
 
